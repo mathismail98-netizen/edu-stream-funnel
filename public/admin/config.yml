@@ -1,0 +1,165 @@
+# ─────────────────────────────────────────────
+# Step 6: replace the repo value with YOUR_GITHUB_USERNAME/YOUR_REPO_NAME
+# ─────────────────────────────────────────────
+backend:
+  name: github
+  repo: achrafrahouti/edu-stream-funnel
+  branch: main
+
+# Global media folder (fallback)
+media_folder: "public/pdfs"
+public_folder: "/pdfs"
+
+# ─────────────────────────────────────────────
+# NIVEAUX
+# One YAML file per level, e.g. src/content/levels/1apic.yml
+# ─────────────────────────────────────────────
+collections:
+  - name: "levels"
+    label: "Niveaux"
+    label_singular: "Niveau"
+    folder: "src/content/levels"
+    create: true
+    delete: true
+    extension: "yml"
+    format: "yaml"
+    slug: "{{slug}}"
+    summary: "{{order}}. {{title}}"
+    sortable_fields: ["order", "title"]
+    fields:
+      - label: "Titre"
+        name: "title"
+        widget: "string"
+        hint: "Ex: 1APIC · 2APIC · Examens Régionaux 1BAC"
+
+      - label: "Description courte"
+        name: "description"
+        widget: "text"
+        hint: "Affiché sur la carte du niveau sur la page d'accueil."
+
+      - label: "Ordre d'affichage"
+        name: "order"
+        widget: "number"
+        value_type: "int"
+        min: 1
+        default: 1
+        hint: "1 = premier dans la liste."
+
+  # ───────────────────────────────────────────
+  # LEÇONS
+  # One Markdown file per lesson.
+  # File name = level-slug + "-" + title-slug
+  #   e.g. 1apic-introduction-au-cours.md
+  # ───────────────────────────────────────────
+  - name: "lessons"
+    label: "Leçons"
+    label_singular: "Leçon"
+    folder: "src/content/lessons"
+    create: true
+    delete: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{fields.level}}-{{slug}}"
+    summary: "{{fields.level}} · {{fields.type}} · {{title}}"
+    sortable_fields: ["title", "fields.level", "fields.order"]
+
+    # Group the list view by level or by type
+    view_groups:
+      - label: "Par niveau"
+        field: level
+      - label: "Par type"
+        field: type
+
+    # Filter the list view quickly
+    view_filters:
+      - label: "Vidéos"
+        field: type
+        pattern: "video"
+      - label: "Fiches PDF"
+        field: type
+        pattern: "pdf"
+      - label: "Brouillons"
+        field: draft
+        pattern: true
+
+    fields:
+      # ── Champs communs ──────────────────────
+      - label: "Titre de la leçon"
+        name: "title"
+        widget: "string"
+        hint: "Ex: Chapitre 1 — Introduction aux suites numériques"
+
+      - label: "Niveau"
+        name: "level"
+        widget: "relation"
+        collection: "levels"
+        search_fields: ["title"]
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        hint: "Créez d'abord le niveau dans Niveaux si il n'apparaît pas ici."
+
+      - label: "Type de contenu"
+        name: "type"
+        widget: "select"
+        default: "video"
+        options:
+          - { label: "🎥  Cours Vidéo", value: "video" }
+          - { label: "📄  Fiche PDF", value: "pdf" }
+        hint: "Vidéo → coller l'ID YouTube · PDF → téléverser le fichier"
+
+      - label: "Ordre dans le niveau"
+        name: "order"
+        widget: "number"
+        value_type: "int"
+        min: 1
+        default: 1
+        hint: "Les leçons sont triées par ce numéro dans la liste."
+
+      # ── Champs vidéo (visibles uniquement si type = video) ──
+      - label: "YouTube Video ID"
+        name: "videoId"
+        widget: "string"
+        required: false
+        hint: >
+          Collez uniquement l'identifiant, pas l'URL complète.
+          Exemple : pour https://www.youtube.com/watch?v=dQw4w9WgXcQ
+          → collez  dQw4w9WgXcQ
+        condition:
+          field: type
+          value: "video"
+
+      - label: "Durée de la vidéo"
+        name: "duration"
+        widget: "string"
+        required: false
+        default: ""
+        hint: "Ex: 18 min · Affiché sur la vignette."
+        condition:
+          field: type
+          value: "video"
+
+      # ── Champ PDF (visible uniquement si type = pdf) ──
+      - label: "Fichier PDF"
+        name: "pdf"
+        widget: "file"
+        required: false
+        # PDFs are stored in public/pdfs/<level>/ automatically
+        media_folder: "/public/pdfs/{{fields.level}}"
+        public_folder: "/pdfs/{{fields.level}}"
+        hint: "Glissez-déposez le PDF ou cliquez pour choisir un fichier."
+        condition:
+          field: type
+          value: "pdf"
+
+      # ── Champs communs optionnels ───────────
+      - label: "Notes / Description"
+        name: "notes"
+        widget: "text"
+        required: false
+        hint: "Texte affiché sous la vidéo ou le bouton de téléchargement sur le site."
+
+      - label: "Brouillon"
+        name: "draft"
+        widget: "boolean"
+        default: false
+        hint: "Activé = la leçon est masquée du site jusqu'à publication."

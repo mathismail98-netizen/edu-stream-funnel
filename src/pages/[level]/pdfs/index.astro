@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LevelSubNav from '../../../components/LevelSubNav.astro';
+
+export async function getStaticPaths() {
+  const levels = await getCollection('levels');
+  return levels.map(level => ({
+    params: { level: level.id },
+    props: { level },
+  }));
+}
+
+const { level } = Astro.props;
+
+const allLessons = await getCollection('lessons', l => !l.data.draft && l.data.level === level.id && l.data.type === 'pdf');
+const pdfs = allLessons.sort((a, b) => a.data.order - b.data.order);
+
+function lessonSlug(slug: string, levelId: string) {
+  const prefix = levelId + '-';
+  return slug.startsWith(prefix) ? slug.slice(prefix.length) : slug;
+}
+---
+
+<BaseLayout title={`Fiches PDF — ${level.data.title}`} currentLevel={level.id}>
+  <!-- Level header -->
+  <div class="bg-gray-50 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Niveau</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{level.data.title}</h1>
+      <p class="mt-1 text-sm text-gray-500 max-w-xl">{level.data.description}</p>
+    </div>
+  </div>
+
+  <!-- Sub-nav -->
+  <LevelSubNav levelSlug={level.id} active="pdfs" />
+
+  <!-- PDFs list -->
+  <div class="max-w-7xl mx-auto px-6 py-10">
+    {pdfs.length === 0 ? (
+      <p class="text-gray-400 text-sm py-12 text-center">Aucune fiche PDF disponible pour le moment. Revenez bientôt.</p>
+    ) : (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {pdfs.map(lesson => (
+          <a
+            href={lesson.data.pdf ?? `/${level.id}/${lessonSlug(lesson.slug, level.id)}/`}
+            target={lesson.data.pdf ? '_blank' : undefined}
+            rel={lesson.data.pdf ? 'noopener noreferrer' : undefined}
+            class="group flex items-start gap-4 p-5 rounded-xl border border-gray-200 bg-white hover:border-gray-400 hover:shadow-md transition-all duration-200"
+          >
+            <!-- PDF icon -->
+            <div class="shrink-0 w-10 h-12 flex flex-col items-center justify-center rounded bg-red-50 border border-red-100">
+              <svg class="w-5 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8.5 17.5h-1v-5h1.8c1.1 0 1.7.55 1.7 1.5s-.6 1.5-1.7 1.5H8.5v2zm0-2.8h.8c.5 0 .7-.2.7-.7s-.2-.7-.7-.7H8.5v1.4zm4.2 2.8h-1.1v-5h1.1c1.4 0 2.2.9 2.2 2.5s-.8 2.5-2.2 2.5zm0-4.2h-.1v3.4h.1c.75 0 1.1-.55 1.1-1.7s-.35-1.7-1.1-1.7zm4.3 1.1v.8h-1.4v1.5h1.6v.8H15v-5h2.6v.8H16v1.1h1.5z"/>
+              </svg>
+              <span class="text-red-500 font-bold text-xs">PDF</span>
+            </div>
+            <!-- Info -->
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-gray-700 leading-snug">
+                {lesson.data.title}
+              </p>
+              {lesson.data.notes && (
+                <p class="mt-1 text-xs text-gray-400 line-clamp-2">{lesson.data.notes}</p>
+              )}
+              <span class="mt-2 inline-flex items-center gap-1 text-xs font-medium text-gray-500 group-hover:text-gray-900 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Télécharger
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

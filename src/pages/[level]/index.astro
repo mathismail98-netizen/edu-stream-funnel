@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LevelSubNav from '../../components/LevelSubNav.astro';
+
+export async function getStaticPaths() {
+  const levels = await getCollection('levels');
+  return levels.map(level => ({
+    params: { level: level.id },
+    props: { level },
+  }));
+}
+
+const { level } = Astro.props;
+
+const allLessons = await getCollection('lessons', l => !l.data.draft && l.data.level === level.id && l.data.type === 'video');
+const videos = allLessons.sort((a, b) => a.data.order - b.data.order);
+
+function lessonSlug(slug: string, levelId: string) {
+  const prefix = levelId + '-';
+  return slug.startsWith(prefix) ? slug.slice(prefix.length) : slug;
+}
+
+function ytThumb(videoId: string) {
+  return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+}
+---
+
+<BaseLayout title={`Cours Vidéos — ${level.data.title}`} currentLevel={level.id}>
+  <!-- Level header -->
+  <div class="bg-gray-50 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-1">Niveau</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{level.data.title}</h1>
+      <p class="mt-1 text-sm text-gray-500 max-w-xl">{level.data.description}</p>
+    </div>
+  </div>
+
+  <!-- Sub-nav -->
+  <LevelSubNav levelSlug={level.id} active="videos" />
+
+  <!-- Videos grid -->
+  <div class="max-w-7xl mx-auto px-6 py-10">
+    {videos.length === 0 ? (
+      <p class="text-gray-400 text-sm py-12 text-center">Aucune vidéo disponible pour le moment. Revenez bientôt.</p>
+    ) : (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {videos.map(lesson => (
+          <a
+            href={`/${level.id}/${lessonSlug(lesson.slug, level.id)}/`}
+            class="group flex flex-col rounded-xl overflow-hidden border border-gray-200 bg-white hover:border-gray-400 hover:shadow-md transition-all duration-200"
+          >
+            <!-- Thumbnail -->
+            <div class="relative aspect-video bg-gray-100 overflow-hidden">
+              {lesson.data.videoId && (
+                <img
+                  src={ytThumb(lesson.data.videoId)}
+                  alt={lesson.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              )}
+              <!-- Play button overlay -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-full bg-black/60 flex items-center justify-center group-hover:bg-black/80 transition-colors">
+                  <svg class="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+              {lesson.data.duration && (
+                <span class="absolute bottom-2 right-2 bg-black/75 text-white text-xs px-1.5 py-0.5 rounded font-medium">
+                  {lesson.data.duration}
+                </span>
+              )}
+            </div>
+            <!-- Info -->
+            <div class="p-4 flex-1">
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-gray-700 leading-snug line-clamp-2">
+                {lesson.data.title}
+              </p>
+              <p class="mt-1 text-xs text-gray-400">Leçon {lesson.data.order}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

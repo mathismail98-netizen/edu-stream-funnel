@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import LevelSubNav from '../../components/LevelSubNav.astro';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('lessons', l => !l.data.draft);
+  return lessons.map(lesson => {
+    const levelSlug = lesson.data.level;
+    const prefix = levelSlug + '-';
+    const lessonSlug = lesson.slug.startsWith(prefix)
+      ? lesson.slug.slice(prefix.length)
+      : lesson.slug;
+    return {
+      params: { level: levelSlug, lesson: lessonSlug },
+      props: { lesson },
+    };
+  });
+}
+
+const { lesson } = Astro.props;
+const { title, level, type, videoId, pdf, duration, notes } = lesson.data;
+
+// Prev/next within same type
+const siblings = await getCollection(
+  'lessons',
+  l => !l.data.draft && l.data.level === level && l.data.type === type
+);
+const sorted = siblings.sort((a, b) => a.data.order - b.data.order);
+const idx = sorted.findIndex(l => l.slug === lesson.slug);
+const prev = idx > 0 ? sorted[idx - 1] : null;
+const next = idx < sorted.length - 1 ? sorted[idx + 1] : null;
+
+const levelData = (await getCollection('levels')).find(l => l.id === level);
+
+function slug(l: typeof sorted[number]) {
+  const prefix = l.data.level + '-';
+  return l.slug.startsWith(prefix) ? l.slug.slice(prefix.length) : l.slug;
+}
+---
+
+<BaseLayout title={title} currentLevel={level}>
+  <!-- Level header -->
+  <div class="bg-gray-50 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <nav class="flex items-center gap-2 text-xs text-gray-400 mb-2" aria-label="Fil d'Ariane">
+        <a href="/" class="hover:text-gray-700 transition-colors">Accueil</a>
+        <span>/</span>
+        <a href={`/${level}/`} class="hover:text-gray-700 transition-colors">{levelData?.data.title ?? level}</a>
+        <span>/</span>
+        <span class="text-gray-600">{type === 'video' ? 'Vidéos' : 'PDFs'}</span>
+      </nav>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">{title}</h1>
+      {duration && <p class="mt-1 text-sm text-gray-400">{duration}</p>}
+    </div>
+  </div>
+
+  <!-- Sub-nav -->
+  <LevelSubNav levelSlug={level} active={type === 'video' ? 'videos' : 'pdfs'} />
+
+  <!-- Content -->
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    {type === 'video' && videoId ? (
+      <div class="space-y-6">
+        <YouTubeEmbed videoId={videoId} title={title} />
+        {pdf && (
+          <a
+            href={pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors"
+          >
+            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Télécharger la fiche PDF
+          </a>
+        )}
+        {notes && (
+          <div class="p-4 rounded-lg bg-gray-50 border border-gray-200 text-sm text-gray-600 leading-relaxed">
+            {notes}
+          </div>
+        )}
+      </div>
+    ) : type === 'pdf' && pdf ? (
+      <div class="space-y-6">
+        <div class="flex flex-col items-center gap-4 p-10 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 text-center">
+          <svg class="w-12 h-14 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5z"/>
+          </svg>
+          <div>
+            <p class="font-semibold text-gray-800 text-lg mb-1">{title}</p>
+            {notes && <p class="text-sm text-gray-500 max-w-sm">{notes}</p>}
+          </div>
+          <a
+            href={pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-700 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Télécharger le PDF
+          </a>
+        </div>
+      </div>
+    ) : (
+      <p class="text-gray-400 text-sm">Contenu non disponible.</p>
+    )}
+
+    <!-- Prev / Next -->
+    <nav class="mt-12 pt-6 border-t border-gray-200 flex items-center justify-between gap-4" aria-label="Navigation entre leçons">
+      {prev ? (
+        <a
+          href={`/${level}/${slug(prev)}/`}
+          class="group flex items-center gap-2 text-sm text-gray-400 hover:text-gray-900 transition-colors max-w-[45%]"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          <span class="truncate">{prev.data.title}</span>
+        </a>
+      ) : <span />}
+      {next ? (
+        <a
+          href={`/${level}/${slug(next)}/`}
+          class="group flex items-center gap-2 text-sm text-gray-400 hover:text-gray-900 transition-colors text-right max-w-[45%]"
+        >
+          <span class="truncate">{next.data.title}</span>
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      ) : <span />}
+    </nav>
+  </div>
+</BaseLayout>
