@@ -1,7 +1,7 @@
 export const site = {
-  name: 'Prof ISMAIL OUDAHA',
+  name: 'Prof OUDAHA ISMAIL',
   nameBold: 'Prof',
-  nameLight: 'ISMAIL OUDAHA',
+  nameLight: 'OUDAHA ISMAIL',
   channelUrl: 'https://www.youtube.com/@profOudaha',
   email: 'contact@profOudaha.com',
   phone: '+212 750-11111',
