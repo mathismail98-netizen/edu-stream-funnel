@@ -1,7 +1,7 @@
 ---
 title: Géométrie dans l'espace
 level: 3apic
-type: video
+type: pdf
 order: 8
 videoId: ''
 duration: ''
