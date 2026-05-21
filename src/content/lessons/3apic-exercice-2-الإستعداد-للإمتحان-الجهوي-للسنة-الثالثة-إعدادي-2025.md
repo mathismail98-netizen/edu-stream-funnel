@@ -2,7 +2,7 @@
 title: Exercice 2 :الإستعداد للإمتحان الجهوي للسنة الثالثة إعدادي 2025
 level: 3apic
 type: video
-order: 3
+order: 2
 videoId: EPT2QQafDrg
 duration: ''
 pdf: ''
