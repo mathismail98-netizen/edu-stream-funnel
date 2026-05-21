@@ -3,7 +3,7 @@
 # ─────────────────────────────────────────────
 backend:
   name: github
-  repo: mohamed-ait/edu-stream-funnel
+  repo: mathismail98-netizen/edu-stream-funnel
   branch: main
 
 # Global media folder (fallback)
