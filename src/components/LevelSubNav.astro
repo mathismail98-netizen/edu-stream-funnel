@@ -8,15 +8,15 @@ const { levelSlug, active } = Astro.props;
 const isExamLevel = levelSlug.startsWith('examens-');
 ---
 
-<div class="border-b border-gray-200 bg-white">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="flex gap-0">
+<div class="border-b border-slate-200/80 bg-white/80 backdrop-blur">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex gap-2 overflow-x-auto py-3">
       <a
         href={`/${levelSlug}/`}
-        class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+        class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
           active === 'videos'
-            ? 'border-gray-900 text-gray-900'
-            : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+            ? 'bg-slate-950 text-white shadow-sm'
+            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
         }`}
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -27,10 +27,10 @@ const isExamLevel = levelSlug.startsWith('examens-');
       </a>
       <a
         href={isExamLevel ? `/${levelSlug}/pdfs/` : `/${levelSlug}/cours-pdf/`}
-        class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+        class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
           active === 'cours-pdf'
-            ? 'border-gray-900 text-gray-900'
-            : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+            ? 'bg-slate-950 text-white shadow-sm'
+            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
         }`}
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -42,24 +42,24 @@ const isExamLevel = levelSlug.startsWith('examens-');
         <>
           <a
             href={`/${levelSlug}/series-pdf/`}
-            class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+            class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
               active === 'series-pdf'
-                ? 'border-gray-900 text-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+                ? 'bg-slate-950 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
             }`}
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 12h8M8 17h5" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
             </svg>
-            Series PDF
+            Séries PDF
           </a>
           <a
             href={`/${levelSlug}/devoirs-pdf/`}
-            class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+            class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
               active === 'devoirs-pdf'
-                ? 'border-gray-900 text-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+                ? 'bg-slate-950 text-white shadow-sm'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
             }`}
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

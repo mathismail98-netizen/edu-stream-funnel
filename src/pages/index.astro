@@ -1,12 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { navLevels } from '../config/site';
+import { site } from '../config/site';
 
 const levels = await getCollection('levels');
 const allLessons = await getCollection('lessons', l => !l.data.draft);
 
 const sortedLevels = levels.sort((a, b) => a.data.order - b.data.order);
+
+const totalVideos = allLessons.filter(lesson => lesson.data.type === 'video').length;
+const totalPdfs = allLessons.filter(lesson => lesson.data.type === 'pdf').length;
+
+const spotlightLevels = sortedLevels.slice(0, 3);
 
 function countByType(levelSlug: string, type: 'video' | 'pdf') {
   return allLessons.filter(l => l.data.level === levelSlug && l.data.type === type).length;
@@ -14,51 +19,134 @@ function countByType(levelSlug: string, type: 'video' | 'pdf') {
 ---
 
 <BaseLayout>
-  <!-- Hero -->
-  <section class="bg-gray-50 border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-6 py-16 text-center">
-      <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Cours en ligne gratuits</p>
-      <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-        Prof<span class="font-normal">OUDAHA ISMAIL</span>
-      </h1>
-      <p class="text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
-        Cours vidéos et fiches PDF pour réussir vos études. Choisissez votre niveau ci-dessous.
-      </p>
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-14 lg:pt-14">
+      <div class="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-slate-600 shadow-sm">
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+            Cours gratuits, organisés par niveau
+          </div>
+          <h1 class="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-7xl">
+            Apprendre plus vite avec des vidéos, des PDF et des devoirs bien structurés.
+          </h1>
+          <p class="mt-6 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+            {site.description} La navigation est pensée pour aller droit au contenu, avec une hiérarchie claire et une expérience mobile fluide.
+          </p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href={`/${spotlightLevels[0]?.id ?? '1apic'}/`} class="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-slate-800">
+              Commencer par le premier niveau
+            </a>
+            <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950">
+              Voir la chaîne YouTube
+            </a>
+          </div>
+
+          <div class="mt-10 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <p class="text-3xl font-semibold tracking-tight text-slate-950">{sortedLevels.length}</p>
+              <p class="mt-1 text-sm text-slate-500">Niveaux disponibles</p>
+            </div>
+            <div class="rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <p class="text-3xl font-semibold tracking-tight text-slate-950">{totalVideos}</p>
+              <p class="mt-1 text-sm text-slate-500">Cours vidéo</p>
+            </div>
+            <div class="rounded-3xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <p class="text-3xl font-semibold tracking-tight text-slate-950">{totalPdfs}</p>
+              <p class="mt-1 text-sm text-slate-500">PDF disponibles</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="absolute inset-0 -z-10 translate-y-6 rounded-[2rem] bg-slate-950/5 blur-2xl"></div>
+          <div class="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_20px_80px_rgba(15,23,42,0.08)] sm:p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Navigation rapide</p>
+                <p class="mt-2 text-lg font-semibold text-slate-950">Accès direct par niveau</p>
+              </div>
+              <div class="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">Live</div>
+            </div>
+            <div class="mt-6 grid gap-3">
+              {spotlightLevels.map(level => {
+                const videos = countByType(level.id, 'video');
+                const pdfs = countByType(level.id, 'pdf');
+                return (
+                  <a href={`/${level.id}/`} class="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 transition hover:border-slate-300 hover:bg-white">
+                    <div>
+                      <p class="text-sm font-semibold text-slate-950 group-hover:text-slate-700">{level.data.title}</p>
+                      <p class="mt-1 text-xs text-slate-500">{videos} vidéos · {pdfs} PDF</p>
+                    </div>
+                    <svg class="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Level grid -->
-  <section class="max-w-7xl mx-auto px-6 py-14">
-    <h2 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">Choisissez votre niveau</h2>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+  <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+    <div class="grid gap-4 md:grid-cols-3">
+      <div class="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Expérience</p>
+        <p class="mt-3 text-lg font-semibold text-slate-950">Une interface sobre, rapide et centrée sur l’essentiel.</p>
+      </div>
+      <div class="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Contenu</p>
+        <p class="mt-3 text-lg font-semibold text-slate-950">Les ressources sont regroupées pour réduire le temps de recherche.</p>
+      </div>
+      <div class="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Mobile</p>
+        <p class="mt-3 text-lg font-semibold text-slate-950">Navigation claire et CTA lisibles sur petit écran.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-14">
+    <div class="flex items-end justify-between gap-4 mb-8">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Choisissez votre niveau</p>
+        <h2 class="mt-3 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Tout le parcours est organisé en cartes claires et actionnables.</h2>
+      </div>
+      <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="hidden rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950 md:inline-flex">
+        Accéder aux vidéos
+      </a>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {sortedLevels.map(level => {
         const videos = countByType(level.id, 'video');
         const pdfs = countByType(level.id, 'pdf');
         return (
           <a
             href={`/${level.id}/`}
-            class="group block p-6 rounded-xl border border-gray-200 bg-white hover:border-gray-400 hover:shadow-md transition-all duration-200"
+            class="group relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_20px_60px_rgba(15,23,42,0.08)]"
           >
-            <h3 class="text-lg font-bold text-gray-900 group-hover:text-gray-700 mb-2">
-              {level.data.title}
-            </h3>
-            <p class="text-sm text-gray-500 leading-relaxed mb-5">
-              {level.data.description}
-            </p>
-            <div class="flex items-center gap-4 text-xs text-gray-400">
-              <span class="flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                {videos} vidéo{videos !== 1 ? 's' : ''}
-              </span>
-              <span class="flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-                {pdfs} fiche{pdfs !== 1 ? 's' : ''} PDF
-              </span>
+            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 opacity-90"></div>
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">Niveau</p>
+                <h3 class="mt-3 text-xl font-semibold tracking-tight text-slate-950 group-hover:text-slate-700">{level.data.title}</h3>
+              </div>
+              <div class="rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-white">{level.data.order.toString().padStart(2, '0')}</div>
+            </div>
+            <p class="mt-4 text-sm leading-7 text-slate-600">{level.data.description}</p>
+            <div class="mt-6 grid grid-cols-2 gap-3 text-sm text-slate-500">
+              <div class="rounded-2xl bg-slate-50 px-4 py-3">
+                <span class="block text-xs uppercase tracking-[0.24em] text-slate-400">Vidéos</span>
+                <span class="mt-1 block font-semibold text-slate-950">{videos}</span>
+              </div>
+              <div class="rounded-2xl bg-slate-50 px-4 py-3">
+                <span class="block text-xs uppercase tracking-[0.24em] text-slate-400">PDF</span>
+                <span class="mt-1 block font-semibold text-slate-950">{pdfs}</span>
+              </div>
             </div>
           </a>
         );

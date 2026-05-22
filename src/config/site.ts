@@ -2,14 +2,14 @@ export const site = {
   name: 'Prof OUDAHA ISMAIL',
   nameBold: 'Prof',
   nameLight: 'OUDAHA ISMAIL',
-  channelUrl: 'https://www.youtube.com/@profOudaha',
-  email: 'contact@profOudaha.com',
-  phone: '+212 750-11111',
+  channelUrl: 'https://www.youtube.com/@Math.Oudaha_ismail',
+  email: 'Math.ismail98@gmail.com',
+  phone: '+212 711‑878800',
   description: 'Cours vidéos et fiches PDF pour les niveaux 1APIC, 2APIC et 3APIC.',
   social: {
     facebook: 'https://www.facebook.com/profOudaha',
     instagram: 'https://www.instagram.com/profOudaha',
-    youtube: 'https://www.youtube.com/@profOudaha',
+    youtube: 'https://www.youtube.com/@Math.Oudaha_ismail',
   },
   footerLinks: [
     { label: 'À Propos', href: '/a-propos/' },
