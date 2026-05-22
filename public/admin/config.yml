@@ -75,9 +75,18 @@ collections:
       - label: "Vidéos"
         field: type
         pattern: "video"
-      - label: "Fiches PDF"
+      - label: "PDF"
         field: type
         pattern: "pdf"
+      - label: "Cours PDF"
+        field: pdfCategory
+        pattern: "cours"
+      - label: "Séries PDF"
+        field: pdfCategory
+        pattern: "series"
+      - label: "Devoirs PDF"
+        field: pdfCategory
+        pattern: "devoirs"
       - label: "Brouillons"
         field: draft
         pattern: true
@@ -104,8 +113,22 @@ collections:
         default: "video"
         options:
           - { label: "🎥  Cours Vidéo", value: "video" }
-          - { label: "📄  Fiche PDF", value: "pdf" }
+          - { label: "📄  PDF", value: "pdf" }
         hint: "Vidéo → coller l'ID YouTube · PDF → téléverser le fichier"
+
+      - label: "Catégorie PDF"
+        name: "pdfCategory"
+        widget: "select"
+        required: false
+        default: "cours"
+        options:
+          - { label: "Cours PDF", value: "cours" }
+          - { label: "Séries PDF", value: "series" }
+          - { label: "Devoirs PDF", value: "devoirs" }
+        hint: "Pour les niveaux examens, utilisez de préférence Cours PDF (cela apparaît comme PDF sur le site)."
+        condition:
+          field: type
+          value: "pdf"
 
       - label: "Ordre dans le niveau"
         name: "order"
