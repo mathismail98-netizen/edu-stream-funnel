@@ -1,5 +1,5 @@
 ---
-title: Développement et factorisation - identités remarquables- Puissances
+title: 1.Développement et factorisation - identités remarquables- Puissances
 level: 3apic
 type: pdf
 pdfCategory: series
