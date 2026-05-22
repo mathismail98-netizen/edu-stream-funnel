@@ -1,6 +1,6 @@
 ---
 title: Examen-regional-3APIC-Mathematiques-Casablanca-Settat-2025-ProfOUDAHA-ISMAIL
-level: examens-nationaux-2bac
+level: examens-regionaux-1bac
 type: pdf
 pdfCategory: devoirs
 order: 2
