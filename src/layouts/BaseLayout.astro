@@ -13,7 +13,6 @@ const { title, description = site.description, currentLevel } = Astro.props;
 const pageTitle = title ? `${title} — ${site.name}` : site.name;
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/';
-const isExamLevel = currentLevel?.startsWith('examens-') ?? false;
 
 const headerLevels = (await getCollection('levels'))
   .sort((a, b) => a.data.order - b.data.order)
@@ -36,18 +35,18 @@ const headerLevels = (await getCollection('levels'))
   </head>
   <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased">
     <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-40 left-1/2 h-96 w-[46rem] -translate-x-1/2 rounded-full bg-sky-100/70 blur-3xl"></div>
-      <div class="absolute top-72 right-[-8rem] h-80 w-80 rounded-full bg-emerald-100/50 blur-3xl"></div>
-      <div class="absolute bottom-0 left-[-7rem] h-80 w-80 rounded-full bg-slate-200/70 blur-3xl"></div>
+      <div class="absolute -top-44 left-1/2 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full bg-cyan-200/45 blur-3xl"></div>
+      <div class="absolute top-64 right-[-8rem] h-96 w-96 rounded-full bg-emerald-200/45 blur-3xl"></div>
+      <div class="absolute bottom-0 left-[-7rem] h-80 w-80 rounded-full bg-amber-100/45 blur-3xl"></div>
     </div>
 
     <!-- ── HEADER ── -->
-    <header class="sticky top-0 z-50 border-b border-white/70 bg-white/75 backdrop-blur-xl shadow-[0_1px_0_rgba(15,23,42,0.04)]">
-      <div class="border-b border-slate-200/70 bg-slate-950 text-white">
+    <header class="sticky top-0 z-50 border-b border-white/70 bg-white/80 backdrop-blur-xl shadow-[0_1px_0_rgba(15,23,42,0.05)]">
+      <div class="border-b border-cyan-200/30 bg-gradient-to-r from-cyan-700 via-sky-700 to-emerald-700 text-white">
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 text-[11px] sm:px-6 lg:px-8">
-          <p class="truncate uppercase tracking-[0.32em] text-white/65">{site.description}</p>
-          <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1.5 font-medium text-white transition hover:bg-white/14">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+          <p class="truncate uppercase tracking-[0.32em] text-white/80">{site.description}</p>
+          <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1.5 font-medium text-white transition hover:bg-white/25">
+            <span class="h-1.5 w-1.5 rounded-full bg-amber-300"></span>
             Suivre la chaîne
           </a>
         </div>
@@ -55,7 +54,7 @@ const headerLevels = (await getCollection('levels'))
 
       <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 sm:px-6 lg:px-8 lg:gap-8 lg:py-5">
         <a href="/" class="group inline-flex shrink-0 items-center gap-3 text-gray-950 transition-transform duration-200 hover:-translate-y-0.5">
-          <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-sm font-bold text-white shadow-lg shadow-slate-950/20">P</span>
+          <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-sm font-bold text-white shadow-lg shadow-cyan-600/30">P</span>
           <span class="leading-none">
             <span class="block text-[10px] font-semibold uppercase tracking-[0.34em] text-gray-500">{site.nameBold}</span>
             <span class="block text-lg font-semibold tracking-tight sm:text-xl">{site.nameLight}</span>
@@ -67,8 +66,8 @@ const headerLevels = (await getCollection('levels'))
             href="/"
             class={`rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] transition ${
               isHome
-                ? 'bg-slate-950 text-white shadow-sm'
-                : 'text-gray-500 hover:bg-slate-100 hover:text-slate-950'
+                ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-cyan-50 hover:text-slate-950'
             }`}
           >
             Accueil
@@ -80,8 +79,8 @@ const headerLevels = (await getCollection('levels'))
                 href={`/${level.slug}/`}
                 class={`rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] transition ${
                   isActive
-                    ? 'bg-slate-950 text-white shadow-sm'
-                    : 'text-gray-500 hover:bg-slate-100 hover:text-slate-950'
+                    ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-cyan-50 hover:text-slate-950'
                 }`}
               >
                 {level.label}
@@ -91,7 +90,7 @@ const headerLevels = (await getCollection('levels'))
         </nav>
 
         <div class="hidden lg:block">
-          <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-slate-800">
+          <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="btn-brand px-4 py-2 text-sm">
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-6 4h4a2 2 0 002-2V8a2 2 0 00-2-2H9a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
@@ -100,7 +99,7 @@ const headerLevels = (await getCollection('levels'))
         </div>
 
         <div class="ml-auto lg:hidden">
-          <button id="mobile-menu-btn" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-gray-700 shadow-sm transition hover:border-slate-300 hover:text-slate-950" aria-label="Menu">
+          <button id="mobile-menu-btn" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan-200 bg-white text-slate-700 shadow-sm transition hover:border-cyan-300 hover:text-slate-950" aria-label="Menu">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -108,20 +107,20 @@ const headerLevels = (await getCollection('levels'))
         </div>
       </div>
 
-      <div id="mobile-nav" class="hidden border-t border-slate-200 bg-white/95 backdrop-blur-xl lg:hidden">
+      <div id="mobile-nav" class="hidden border-t border-cyan-100 bg-white/95 backdrop-blur-xl lg:hidden">
         <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6">
-          <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="mb-4 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+          <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="mb-4 flex items-center justify-between rounded-2xl border border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50 px-4 py-3 text-sm font-medium text-slate-700">
             <span>Accéder à la chaîne YouTube</span>
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h4m0 0v4m0-4L10 14m-4 3h8a2 2 0 002-2V7" />
             </svg>
           </a>
           <div class="grid gap-2">
-            <a href="/" class={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${isHome ? 'border-slate-950 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-700'}`}>Accueil</a>
+            <a href="/" class={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${isHome ? 'border-cyan-500 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white' : 'border-slate-200 bg-white text-slate-700'}`}>Accueil</a>
             {headerLevels.map(level => (
               <a
                 href={`/${level.slug}/`}
-                class={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${currentLevel === level.slug ? 'border-slate-950 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-700'}`}
+                class={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${currentLevel === level.slug ? 'border-cyan-500 bg-gradient-to-r from-cyan-500 to-emerald-500 text-white' : 'border-slate-200 bg-white text-slate-700'}`}
               >
                 {level.label}
               </a>
@@ -137,12 +136,12 @@ const headerLevels = (await getCollection('levels'))
     </main>
 
     <!-- ── FOOTER ── -->
-    <footer class="mt-24 border-t border-slate-200/80 bg-slate-950 text-white">
+    <footer class="mt-24 border-t border-cyan-200/30 bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 text-white">
       <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div class="max-w-lg">
             <a href="/" class="inline-flex items-center gap-3 text-white transition-opacity hover:opacity-80">
-              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-sm font-bold text-slate-950">P</span>
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-400 text-sm font-bold text-slate-950">P</span>
               <span>
                 <span class="block text-[10px] font-semibold uppercase tracking-[0.34em] text-white/55">{site.nameBold}</span>
                 <span class="block text-lg font-semibold tracking-tight">{site.nameLight}</span>
@@ -150,7 +149,7 @@ const headerLevels = (await getCollection('levels'))
             </a>
             <p class="mt-5 max-w-md text-sm leading-7 text-white/65">{site.description} Une plateforme claire, rapide et pensée pour mettre les ressources essentielles à portée de main.</p>
             <div class="mt-6 flex flex-wrap gap-3">
-              <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5">
+              <a href={site.channelUrl} target="_blank" rel="noopener noreferrer" class="btn-brand px-4 py-2.5 text-sm">
                 Regarder les vidéos
               </a>
               <a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5">

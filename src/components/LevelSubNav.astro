@@ -8,15 +8,15 @@ const { levelSlug, active } = Astro.props;
 const isExamLevel = levelSlug.startsWith('examens-');
 ---
 
-<div class="border-b border-slate-200/80 bg-white/80 backdrop-blur">
+<div class="border-b border-cyan-100/90 bg-white/80 backdrop-blur">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex gap-2 overflow-x-auto py-3">
       <a
         href={`/${levelSlug}/`}
         class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
           active === 'videos'
-            ? 'bg-slate-950 text-white shadow-sm'
-            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
+            ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+            : 'bg-cyan-50 text-slate-700 hover:bg-cyan-100 hover:text-slate-950'
         }`}
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -29,8 +29,8 @@ const isExamLevel = levelSlug.startsWith('examens-');
         href={isExamLevel ? `/${levelSlug}/pdfs/` : `/${levelSlug}/cours-pdf/`}
         class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
           active === 'cours-pdf'
-            ? 'bg-slate-950 text-white shadow-sm'
-            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
+            ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+            : 'bg-cyan-50 text-slate-700 hover:bg-cyan-100 hover:text-slate-950'
         }`}
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -44,8 +44,8 @@ const isExamLevel = levelSlug.startsWith('examens-');
             href={`/${levelSlug}/series-pdf/`}
             class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
               active === 'series-pdf'
-                ? 'bg-slate-950 text-white shadow-sm'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
+                ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+                : 'bg-cyan-50 text-slate-700 hover:bg-cyan-100 hover:text-slate-950'
             }`}
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -58,8 +58,8 @@ const isExamLevel = levelSlug.startsWith('examens-');
             href={`/${levelSlug}/devoirs-pdf/`}
             class={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
               active === 'devoirs-pdf'
-                ? 'bg-slate-950 text-white shadow-sm'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-950'
+                ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+                : 'bg-cyan-50 text-slate-700 hover:bg-cyan-100 hover:text-slate-950'
             }`}
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

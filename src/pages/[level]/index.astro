@@ -29,7 +29,7 @@ function ytThumb(videoId: string) {
 ---
 
 <BaseLayout title={`Cours Vidéos — ${level.data.title}`} currentLevel={level.id}>
-  <section class="border-b border-slate-200/80 bg-white/70">
+  <section class="border-b border-cyan-100/80 bg-white/70">
     <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div>
@@ -39,13 +39,13 @@ function ytThumb(videoId: string) {
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2 lg:justify-self-end">
-          <div class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="glass-card rounded-[1.5rem] p-5">
             <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Cours vidéos</p>
-            <p class="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{videos.length}</p>
+            <p class="mt-2 text-3xl font-semibold tracking-tight text-cyan-700">{videos.length}</p>
           </div>
-          <div class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="glass-card rounded-[1.5rem] p-5">
             <p class="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">PDF associés</p>
-            <p class="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{pdfCount}</p>
+            <p class="mt-2 text-3xl font-semibold tracking-tight text-emerald-700">{pdfCount}</p>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@ function ytThumb(videoId: string) {
   <!-- Videos grid -->
   <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
     {videos.length === 0 ? (
-      <div class="rounded-[1.75rem] border border-dashed border-slate-300 bg-white/80 px-6 py-16 text-center text-sm text-slate-500 shadow-sm">
+      <div class="glass-card rounded-[1.75rem] border-dashed border-cyan-200 px-6 py-16 text-center text-sm text-slate-500">
         Aucune vidéo disponible pour le moment. Revenez bientôt.
       </div>
     ) : (
@@ -66,7 +66,7 @@ function ytThumb(videoId: string) {
         {videos.map(lesson => (
           <a
             href={`/${level.id}/${lessonSlug(lesson.slug, level.id)}/`}
-            class="group flex flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_24px_70px_rgba(15,23,42,0.08)]"
+            class="group flex flex-col overflow-hidden rounded-[1.6rem] border border-cyan-100 bg-white/88 shadow-sm backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-cyan-300 hover:shadow-[0_24px_70px_rgba(15,23,42,0.12)]"
           >
             <!-- Thumbnail -->
             <div class="relative aspect-video overflow-hidden bg-slate-100">
@@ -79,15 +79,15 @@ function ytThumb(videoId: string) {
                 />
               )}
               <!-- Play button overlay -->
-              <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-slate-950/25 via-transparent to-transparent">
-                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-slate-950 shadow-lg shadow-slate-950/20 transition group-hover:scale-105">
+              <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-cyan-900/30 via-transparent to-emerald-800/10">
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-cyan-700 shadow-lg shadow-cyan-700/20 transition group-hover:scale-105">
                   <svg class="ml-0.5 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
                 </div>
               </div>
               {lesson.data.duration && (
-                <span class="absolute bottom-3 right-3 rounded-full bg-slate-950/85 px-2.5 py-1 text-xs font-medium text-white backdrop-blur">
+                <span class="absolute bottom-3 right-3 rounded-full bg-gradient-to-r from-cyan-600/90 to-emerald-600/90 px-2.5 py-1 text-xs font-medium text-white backdrop-blur">
                   {lesson.data.duration}
                 </span>
               )}
@@ -99,7 +99,7 @@ function ytThumb(videoId: string) {
               </p>
               <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
                 <span>Leçon {lesson.data.order}</span>
-                <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-600">
+                <span class="inline-flex items-center gap-1 rounded-full bg-cyan-50 px-2.5 py-1 font-medium text-cyan-700">
                   Voir le cours
                 </span>
               </div>
