@@ -1,10 +1,11 @@
 ---
 interface Props {
   levelSlug: string;
-  active: 'videos' | 'pdfs';
+  active: 'videos' | 'cours-pdf' | 'series-pdf' | 'devoirs-pdf';
 }
 
 const { levelSlug, active } = Astro.props;
+const isExamLevel = levelSlug.startsWith('examens-');
 ---
 
 <div class="border-b border-gray-200 bg-white">
@@ -22,12 +23,12 @@ const { levelSlug, active } = Astro.props;
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        Cours Vidéos
+        {isExamLevel ? 'Vidéos' : 'Cours Vidéos'}
       </a>
       <a
-        href={`/${levelSlug}/pdfs/`}
+        href={isExamLevel ? `/${levelSlug}/pdfs/` : `/${levelSlug}/cours-pdf/`}
         class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
-          active === 'pdfs'
+          active === 'cours-pdf'
             ? 'border-gray-900 text-gray-900'
             : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
         }`}
@@ -35,8 +36,40 @@ const { levelSlug, active } = Astro.props;
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        Fiches PDF
+        {isExamLevel ? 'PDF' : 'Cours PDF'}
       </a>
+      {!isExamLevel && (
+        <>
+          <a
+            href={`/${levelSlug}/series-pdf/`}
+            class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+              active === 'series-pdf'
+                ? 'border-gray-900 text-gray-900'
+                : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+            }`}
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 12h8M8 17h5" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+            Series PDF
+          </a>
+          <a
+            href={`/${levelSlug}/devoirs-pdf/`}
+            class={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+              active === 'devoirs-pdf'
+                ? 'border-gray-900 text-gray-900'
+                : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300'
+            }`}
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h6m-7 4h8m-9 4h10m-11 4h12" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 3h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+            Devoirs PDF
+          </a>
+        </>
+      )}
     </div>
   </div>
 </div>

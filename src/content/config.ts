@@ -15,6 +15,7 @@ const lessons = defineCollection({
     title: z.string(),
     level: z.string(),
     type: z.enum(['video', 'pdf']),
+    pdfCategory: z.enum(['cours', 'series', 'devoirs']).optional(),
     order: z.number(),
     videoId: z.string().optional(),
     pdf: z.string().optional(),

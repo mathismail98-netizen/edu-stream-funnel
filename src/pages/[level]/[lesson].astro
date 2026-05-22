@@ -20,7 +20,23 @@ export async function getStaticPaths() {
 }
 
 const { lesson } = Astro.props;
-const { title, level, type, videoId, pdf, duration, notes } = lesson.data;
+const { title, level, type, pdfCategory, videoId, pdf, duration, notes } = lesson.data;
+
+const activeTab =
+  type === 'video'
+    ? 'videos'
+    : pdfCategory === 'series'
+      ? 'series-pdf'
+      : pdfCategory === 'devoirs'
+        ? 'devoirs-pdf'
+        : 'cours-pdf';
+
+const pdfLabel =
+  pdfCategory === 'series'
+    ? 'Series PDF'
+    : pdfCategory === 'devoirs'
+      ? 'Devoirs PDF'
+      : 'Cours PDF';
 
 // Prev/next within same type
 const siblings = await getCollection(
@@ -49,7 +65,7 @@ function slug(l: typeof sorted[number]) {
         <span>/</span>
         <a href={`/${level}/`} class="hover:text-gray-700 transition-colors">{levelData?.data.title ?? level}</a>
         <span>/</span>
-        <span class="text-gray-600">{type === 'video' ? 'Vidéos' : 'PDFs'}</span>
+        <span class="text-gray-600">{type === 'video' ? 'Videos' : pdfLabel}</span>
       </nav>
       <h1 class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">{title}</h1>
       {duration && <p class="mt-1 text-sm text-gray-400">{duration}</p>}
@@ -57,7 +73,7 @@ function slug(l: typeof sorted[number]) {
   </div>
 
   <!-- Sub-nav -->
-  <LevelSubNav levelSlug={level} active={type === 'video' ? 'videos' : 'pdfs'} />
+  <LevelSubNav levelSlug={level} active={activeTab} />
 
   <!-- Content -->
   <div class="max-w-4xl mx-auto px-6 py-10">
