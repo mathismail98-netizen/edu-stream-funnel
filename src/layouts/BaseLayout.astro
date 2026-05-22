@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import { site, navLevels } from '../config/site';
+import { getCollection } from 'astro:content';
+import { site } from '../config/site';
 
 interface Props {
   title?: string;
@@ -12,6 +13,10 @@ const { title, description = site.description, currentLevel } = Astro.props;
 const pageTitle = title ? `${title} — ${site.name}` : site.name;
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/';
+
+const headerLevels = (await getCollection('levels'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(level => ({ slug: level.id, label: level.data.title }));
 ---
 
 <!doctype html>
@@ -50,7 +55,7 @@ const isHome = currentPath === '/';
           >
             Accueil
           </a>
-          {navLevels.map(level => {
+          {headerLevels.map(level => {
             const isActive = currentLevel === level.slug;
             return (
               <a
@@ -81,7 +86,7 @@ const isHome = currentPath === '/';
       <div id="mobile-nav" class="hidden lg:hidden border-t border-gray-100 bg-white">
         <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col gap-1">
           <a href="/" class="py-2 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-gray-900">Accueil</a>
-          {navLevels.map(level => (
+          {headerLevels.map(level => (
             <a
               href={`/${level.slug}/`}
               class={`py-2 text-xs font-bold uppercase tracking-widest ${
