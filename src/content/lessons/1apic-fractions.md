@@ -1,7 +1,7 @@
 ---
 title: Fractions
 level: 1apic
-type: video
+type: pdf
 order: 1
 videoId: ''
 duration: Fractions
