@@ -2,9 +2,9 @@
 title: تصحيح الامتحان الجهوي الموحد الثالثة إعدادي مادة الرياضيات جهة مراكش اسفي 2025 | Partie 1
 level: examens-regionaux-1bac
 type: video
-pdfCategory: cours
+pdfCategory: ''
 order: 1
-videoId: sL1uMWoNVsk
+videoId: 6kA2UWwYqCg
 duration: ''
 pdf: ''
 notes: ''
