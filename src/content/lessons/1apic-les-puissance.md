@@ -1,5 +1,5 @@
 ---
-title: Les puissance
+title: 6.Les puissance
 level: 1apic
 type: pdf
 order: 6
