@@ -1,5 +1,5 @@
 ---
-title: Droites Remarquables dans un triangle
+title: 7.Droites Remarquables dans un triangle
 level: 1apic
 type: pdf
 order: 7
