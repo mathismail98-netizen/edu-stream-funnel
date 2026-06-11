@@ -2,7 +2,7 @@
 title: Examen-regional-3APIC-Mathematiques-Tanger-Tetouan-AL-Hoceima-2025-ProfOUDAHA-ISMAIL
 level: examens-regionaux-1bac
 type: pdf
-pdfCategory: ''
+pdfCategory: cours
 order: 6
 videoId: ''
 duration: ''

@@ -2,7 +2,7 @@
 title: Examen-regional-3apic-Mathematiques-Laayoune-Sakia-Hamra-2025-ProfOUDAHA-ISMAIL
 level: examens-regionaux-1bac
 type: pdf
-pdfCategory: ''
+pdfCategory: cours
 order: 4
 videoId: ''
 duration: ''
