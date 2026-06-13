@@ -4,7 +4,7 @@ level: examens-regionaux-1bac
 type: video
 pdfCategory: cours
 order: 2
-videoId: 6kA2UWwYqCg&t
+videoId: 6kA2UWwYqCg
 duration: ''
 pdf: ''
 notes: ''
