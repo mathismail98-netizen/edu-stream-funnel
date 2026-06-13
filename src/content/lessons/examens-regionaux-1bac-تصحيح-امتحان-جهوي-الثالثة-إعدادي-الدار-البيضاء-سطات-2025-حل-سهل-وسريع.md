@@ -4,7 +4,7 @@ level: examens-regionaux-1bac
 type: video
 pdfCategory: cours
 order: 3
-videoId: AVQxYJMf20Aتصحيح امتحان جهوي الثالثة إعدادي | الدار البيضاء - سطات 2025 | حل سهل وسريع
+videoId: AVQxYJMf20A
 duration: ''
 pdf: ''
 notes: ''
