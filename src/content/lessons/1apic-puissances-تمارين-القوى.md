@@ -4,7 +4,7 @@ level: 1apic
 type: video
 pdfCategory: cours
 order: 2
-videoId: x8sAlxLWBKIpuissances تمارين القوىpuissances تمارين القوى
+videoId: x8sAlxLWBKI
 duration: ''
 pdf: ''
 notes: ''
