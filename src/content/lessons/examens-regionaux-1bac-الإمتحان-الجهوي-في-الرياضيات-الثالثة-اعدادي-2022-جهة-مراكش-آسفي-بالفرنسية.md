@@ -2,6 +2,7 @@
 title: الإمتحان-الجهوي-في-الرياضيات-الثالثة-اعدادي-2022-جهة-مراكش-آسفي-بالفرنسية
 level: examens-regionaux-1bac
 type: pdf
+pdfCategory: cours
 order: 5
 videoId: ''
 duration: ''
